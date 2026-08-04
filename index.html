@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calculadora Científica</title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- =========================================
+         CSS
+    ========================================== -->
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================
+           CUERPO
+        ========================================== */
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: linear-gradient(135deg,
+                    #d9d9df,
+                    #8c8c99);
+        }
+
+
+        /* =========================================
+           CONTENEDOR
+        ========================================== */
+
+        .container-fluid {
+
+            width: 100%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 0;
+        }
+
+
+        /* =========================================
+           CALCULADORA
+        ========================================== */
+
+        .calculadora {
+
+            width: 100%;
+
+            max-width: 560px;
+
+            padding: 28px 24px 30px;
+
+            border-radius: 38px;
+
+            background: linear-gradient(145deg,
+                    #4a4d70,
+                    #30334f);
+
+            box-shadow:
+                0 25px 45px rgba(0, 0, 0, .35),
+                inset 0 2px 5px rgba(255, 255, 255, .15);
+        }
+
+
+        /* =========================================
+           ENCABEZADO
+        ========================================== */
+
+        .marca {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            color: white;
+
+            margin-bottom: 8px;
+        }
+
+
+        .marca h1 {
+
+            margin: 0;
+
+            font-size: clamp(1.7rem,
+                    5vw,
+                    2.5rem);
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+        }
+
+
+        .marca span {
+
+            font-size: clamp(.75rem,
+                    2.5vw,
+                    1.05rem);
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           NATURAL DISPLAY
+        ========================================== */
+
+        .natural-display {
+
+            text-align: center;
+
+            margin-bottom: 20px;
+
+            color: #00ffff;
+
+            font-size: clamp(1rem,
+                    4vw,
+                    1.5rem);
+
+            font-weight: bold;
+
+            font-style: italic;
+
+            letter-spacing: 2px;
+        }
+
+
+        /* =========================================
+           PANTALLA
+        ========================================== */
+
+        .contenedor-pantalla {
+
+            padding: 14px;
+
+            border-radius: 25px;
+
+            background: linear-gradient(145deg,
+                    #25283e,
+                    #5d6076);
+
+            box-shadow:
+                inset 0 5px 15px rgba(0, 0, 0, .5);
+
+            margin-bottom: 20px;
+        }
+
+
+        #pantalla {
+
+            width: 100%;
+
+            height: 105px;
+
+            border: none;
+
+            outline: none;
+
+            border-radius: 17px;
+
+            padding: 15px;
+
+            text-align: right;
+
+            font-size: clamp(1.8rem,
+                    6vw,
+                    2.7rem);
+
+            color: #222;
+
+            background: linear-gradient(90deg,
+                    #eeeeee,
+                    #cfcfcf);
+
+            box-shadow:
+                inset 0 2px 7px rgba(0, 0, 0, .2);
+        }
+
+
+        #historial { 
+
+            min-height: 24px;
+
+            margin-top: 5px;
+
+            padding-right: 8px;
+
+            text-align: right;
+
+            color: #555;
+
+            font-size: .9rem;
+        }
+
+
+        /* =========================================
+           BOTONES CIENTÍFICOS
+        ========================================== */
+
+        .boton-cientifico {
+
+            min-height: 52px;
+
+            border: 2px solid #171827;
+
+            border-radius: 14px;
+
+            color: white;
+
+            background: linear-gradient(145deg,
+                    #66698b,
+                    #444761);
+
+            font-weight: bold;
+
+            font-size: 1rem;
+
+            box-shadow:
+                0 4px 0 #191a27;
+
+            transition: .1s;
+        }
+
+
+        .boton-cientifico:hover {
+
+            color: white;
+
+            background: #777b9f;
+        }
+
+
+        .boton-cientifico:active {
+
+            transform: translateY(3px);
+
+            box-shadow:
+                0 1px 0 #191a27;
+        }
+
+
+        /* =========================================
+           BOTONES PRINCIPALES
+        ========================================== */
+
+        .boton {
+
+            width: 100%;
+
+            min-height: 62px;
+
+            border: 2px solid #11121d;
+
+            border-radius: 15px;
+
+            font-size: clamp(1.2rem,
+                    4vw,
+                    1.65rem);
+
+            font-weight: bold;
+
+            color: white;
+
+            background: linear-gradient(145deg,
+                    #292b3c,
+                    #181a28);
+
+            box-shadow:
+                0 5px 0 #090a10;
+
+            transition: .1s;
+        }
+
+
+        .boton:hover {
+
+            color: white;
+
+            background: #383b50;
+        }
+
+
+        .boton:active {
+
+            transform: translateY(4px);
+
+            box-shadow:
+                0 1px 0 #090a10;
+        }
+
+
+        /* =========================================
+           OPERADORES
+        ========================================== */
+
+        .operador {
+
+            background: linear-gradient(145deg,
+                    #5b5e7c,
+                    #41445e);
+        }
+
+
+        /* =========================================
+           IGUAL
+        ========================================== */
+
+        .igual {
+
+            background: linear-gradient(145deg,
+                    #72758f,
+                    #4f526b);
+        }
+
+
+        /* =========================================
+           BORRAR
+        ========================================== */
+
+        .borrar {
+
+            background: linear-gradient(145deg,
+                    #b56e8d,
+                    #854e69);
+        }
+
+
+        /* =========================================
+           LIMPIAR
+        ========================================== */
+
+        .limpiar {
+
+            background: linear-gradient(145deg,
+                    #b46d89,
+                    #814c66);
+        }
+
+
+        /* =========================================
+           PORCENTAJE
+        ========================================== */
+
+        .porcentaje {
+
+            background: linear-gradient(145deg,
+                    #596b82,
+                    #3f4e63);
+        }
+
+
+        /* =========================================
+           ETIQUETAS
+        ========================================== */
+
+        .etiqueta {
+
+            text-align: center;
+
+            color: #e4d99a;
+
+            font-size: .72rem;
+
+            font-weight: bold;
+
+            margin-bottom: 4px;
+        }
+
+
+        /* =========================================
+           BOTONES SHIFT / ALPHA / MODE / ON
+        ========================================== */
+
+        .boton-modo {
+
+            min-height: 42px;
+
+            border: 2px solid #151625;
+
+            border-radius: 50px;
+
+            color: white;
+
+            background: #7779a8;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 3px 0 #181927;
+        }
+
+
+        .boton-modo:hover {
+
+            color: white;
+
+            background: #898bb7;
+        }
+
+
+        /* =========================================
+           PIE
+        ========================================== */
+
+        .nota {
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            color: #cfd1dc;
+
+            font-size: .78rem;
+        }
+
+
+        /* =========================================
+           CELULARES
+        ========================================== */
+
+        @media (max-width: 480px) {
+
+            body {
+
+                padding: 8px;
+
+            }
+
+
+            .calculadora {
+
+                padding: 20px 12px;
+
+                border-radius: 25px;
+
+            }
+
+
+            .marca {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+
+            .marca span {
+
+                white-space: normal;
+
+            }
+
+
+            .boton {
+
+                min-height: 55px;
+
+                border-radius: 12px;
+
+            }
+
+
+            .boton-cientifico {
+
+                min-height: 46px;
+
+                font-size: .85rem;
+
+            }
+
+
+            #pantalla {
+
+                height: 85px;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         CONTENEDOR PRINCIPAL
+    ========================================== -->
+
+    <div class="container-fluid">
+
+
+        <!-- =====================================
+             CALCULADORA
+        ====================================== -->
+
+        <div class="calculadora">
+
+
+            <!-- =================================
+                 ENCABEZADO
+            ================================== -->
+
+            <div class="marca">
+
+                <h1>
+                    WIKIO
+                </h1>
+
+                <span>
+                    SCIENTIFIC CALCULATOR ƒx⁻¹
+                </span>
+
+            </div>
+
+
+            <div class="natural-display">
+
+                NATURAL DISPLAY
+
+            </div>
+
+
+            <!-- =================================
+                 PANTALLA
+            ================================== -->
+
+            <div class="contenedor-pantalla">
+
+                <input type="text" id="pantalla" value="0" readonly>
+
+                <div id="historial"></div>
+
+            </div>
+
+
+            <!-- =================================
+                 BOTONES DE MODO
+            ================================== -->
+
+            <div class="row g-2 mb-3">
+
+
+                <div class="col-3">
+
+                    <div class="etiqueta">
+                        SHIFT
+                    </div>
+
+                    <button class="btn boton-modo w-100" onclick="mostrarMensaje('SHIFT')">
+                        SHIFT
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <div class="etiqueta">
+                        ALPHA
+                    </div>
+
+                    <button class="btn boton-modo w-100" onclick="mostrarMensaje('ALPHA')">
+                        ALPHA
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <div class="etiqueta">
+                        MODE
+                    </div>
+
+                    <button class="btn boton-modo w-100" onclick="mostrarMensaje('MODE')">
+                        MODE
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <div class="etiqueta">
+                        ON
+                    </div>
+
+                    <button class="btn boton-modo w-100" onclick="encender()">
+                        ON
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 FUNCIONES CIENTÍFICAS
+            ================================== -->
+
+            <div class="row g-2 mb-2">
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="valorAbsoluto()">
+                        Abs
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="potencia(3)">
+                        x³
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="factorial()">
+                        x!
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="logaritmo()">
+                        log
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="raiz()">
+                        √
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="potencia(2)">
+                        x²
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="logNatural()">
+                        ln
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="inversa()">
+                        x⁻¹
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="seno()">
+                        sin
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="coseno()">
+                        cos
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="tangente()">
+                        tan
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="porcentaje()">
+                        %
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="agregar('(')">
+                        (
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="agregar(')')">
+                        )
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="pi()">
+                        π
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton-cientifico w-100" onclick="numeroEuler()">
+                        e
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 TECLADO PRINCIPAL
+            ================================== -->
+
+            <div class="row g-2">
+
+
+                <!-- 7 8 9 DEL AC -->
+
+                <div class="col-2">
+
+                    <button class="btn boton" onclick="agregar('7')">
+                        7
+                    </button>
+
+                </div>
+
+
+                <div class="col-2">
+
+                    <button class="btn boton" onclick="agregar('8')">
+                        8
+                    </button>
+
+                </div>
+
+
+                <div class="col-2">
+
+                    <button class="btn boton" onclick="agregar('9')">
+                        9
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton borrar" onclick="borrar()">
+                        DEL
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton limpiar" onclick="limpiar()">
+                        AC
+                    </button>
+
+                </div>
+
+
+                <!-- 4 5 6 MULTIPLICACIÓN -->
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('4')">
+                        4
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('5')">
+                        5
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('6')">
+                        6
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton operador" onclick="agregar('*')">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <!-- 1 2 3 DIVISIÓN -->
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('1')">
+                        1
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('2')">
+                        2
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('3')">
+                        3
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton operador" onclick="agregar('/')">
+                        ÷
+                    </button>
+
+                </div>
+
+
+                <!-- 0 . + - -->
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('0')">
+                        0
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton" onclick="agregar('.')">
+                        .
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton operador" onclick="agregar('+')">
+                        +
+                    </button>
+
+                </div>
+
+
+                <div class="col-3">
+
+                    <button class="btn boton operador" onclick="agregar('-')">
+                        −
+                    </button>
+
+                </div>
+
+
+                <!-- PORCENTAJE E IGUAL -->
+
+                <div class="col-6">
+
+                    <button class="btn boton porcentaje" onclick="porcentaje()">
+                        %
+                    </button>
+
+                </div>
+
+
+                <div class="col-6">
+
+                    <button class="btn boton igual" onclick="calcular()">
+                        =
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PIE -->
+
+            <div class="nota">
+
+                Calculadora Científica Web
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+
+        const pantalla =
+            document.getElementById("pantalla");
+
+
+        const historial =
+            document.getElementById("historial");
+
+
+        /* =========================================
+           AGREGAR
+        ========================================== */
+
+        function agregar(valor) {
+
+            if (
+                pantalla.value === "0" ||
+                pantalla.value === "Error"
+            ) {
+
+                pantalla.value = valor;
+
+            }
+
+            else {
+
+                pantalla.value += valor;
+
+            }
+
+        }
+
+
+        /* =========================================
+           BORRAR
+        ========================================== */
+
+        function borrar() {
+
+            if (
+                pantalla.value.length > 1
+            ) {
+
+                pantalla.value =
+                    pantalla.value.slice(0, -1);
+
+            }
+
+            else {
+
+                pantalla.value = "0";
+
+            }
+
+        }
+
+
+        /* =========================================
+           LIMPIAR
+        ========================================== */
+
+        function limpiar() {
+
+            pantalla.value = "0";
+
+            historial.textContent = "";
+
+        }
+
+
+        /* =========================================
+           CALCULAR
+        ========================================== */
+
+        function calcular() {
+
+            try {
+
+                let expresion =
+                    pantalla.value;
+
+                expresion =
+                    expresion.replace(/×/g, "*");
+
+                expresion =
+                    expresion.replace(/÷/g, "/");
+
+
+                if (
+                    !/^[0-9+\-*/().\s]+$/.test(
+                        expresion
+                    )
+                ) {
+
+                    throw new Error();
+
+                }
+
+
+                let resultado =
+                    Function(
+                        '"use strict"; return (' +
+                        expresion +
+                        ')'
+                    )();
+
+
+                if (
+                    !Number.isFinite(resultado)
+                ) {
+
+                    throw new Error();
+
+                }
+
+
+                historial.textContent =
+                    expresion + " =";
+
+
+                pantalla.value =
+                    redondear(resultado);
+
+            }
+
+            catch {
+
+                pantalla.value =
+                    "Error";
+
+            }
+
+        }
+
+
+        /* =========================================
+           RAÍZ
+        ========================================== */
+
+        function raiz() {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+                const resultado =
+                    Math.sqrt(valor);
+
+                mostrarResultado(
+                    "√(" + valor + ")",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           POTENCIA
+        ========================================== */
+
+        function potencia(exponente) {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+                const resultado =
+                    Math.pow(
+                        valor,
+                        exponente
+                    );
+
+                mostrarResultado(
+                    valor + "^" + exponente,
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           FACTORIAL
+        ========================================== */
+
+        function factorial() {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+                if (
+                    !Number.isInteger(valor) ||
+                    valor < 0 ||
+                    valor > 170
+                ) {
+
+                    throw new Error();
+
+                }
+
+
+                let resultado = 1;
+
+
+                for (
+                    let i = 2;
+                    i <= valor;
+                    i++
+                ) {
+
+                    resultado *= i;
+
+                }
+
+
+                mostrarResultado(
+                    valor + "!",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           LOGARITMO
+        ========================================== */
+
+        function logaritmo() {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+                if (
+                    valor <= 0
+                ) {
+
+                    throw new Error();
+
+                }
+
+
+                const resultado =
+                    Math.log10(valor);
+
+
+                mostrarResultado(
+                    "log(" + valor + ")",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           LOG NATURAL
+        ========================================== */
+
+        function logNatural() {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+                if (
+                    valor <= 0
+                ) {
+
+                    throw new Error();
+
+                }
+
+
+                const resultado =
+                    Math.log(valor);
+
+
+                mostrarResultado(
+                    "ln(" + valor + ")",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           VALOR ABSOLUTO
+        ========================================== */
+
+        function valorAbsoluto() {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+                const resultado =
+                    Math.abs(valor);
+
+
+                mostrarResultado(
+                    "Abs(" + valor + ")",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           INVERSA
+        ========================================== */
+
+        function inversa() {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+                if (
+                    valor === 0
+                ) {
+
+                    throw new Error();
+
+                }
+
+
+                const resultado =
+                    1 / valor;
+
+
+                mostrarResultado(
+                    "1/(" + valor + ")",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           SENO
+        ========================================== */
+
+        function seno() {
+
+            try {
+
+                const grados =
+                    obtenerNumero();
+
+
+                const radianes =
+                    grados *
+                    Math.PI /
+                    180;
+
+
+                const resultado =
+                    Math.sin(radianes);
+
+
+                mostrarResultado(
+                    "sin(" +
+                    grados +
+                    "°)",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           COSENO
+        ========================================== */
+
+        function coseno() {
+
+            try {
+
+                const grados =
+                    obtenerNumero();
+
+
+                const radianes =
+                    grados *
+                    Math.PI /
+                    180;
+
+
+                const resultado =
+                    Math.cos(radianes);
+
+
+                mostrarResultado(
+                    "cos(" +
+                    grados +
+                    "°)",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           TANGENTE
+        ========================================== */
+
+        function tangente() {
+
+            try {
+
+                const grados =
+                    obtenerNumero();
+
+
+                const radianes =
+                    grados *
+                    Math.PI /
+                    180;
+
+
+                const resultado =
+                    Math.tan(radianes);
+
+
+                mostrarResultado(
+                    "tan(" +
+                    grados +
+                    "°)",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           PORCENTAJE
+        ========================================== */
+
+        function porcentaje() {
+
+            try {
+
+                const valor =
+                    obtenerNumero();
+
+
+                const resultado =
+                    valor / 100;
+
+
+                mostrarResultado(
+                    valor + "%",
+                    resultado
+                );
+
+            }
+
+            catch {
+
+                mostrarError();
+
+            }
+
+        }
+
+
+        /* =========================================
+           PI
+        ========================================== */
+
+        function pi() {
+
+            pantalla.value =
+                redondear(Math.PI);
+
+        }
+
+
+        /* =========================================
+           EULER
+        ========================================== */
+
+        function numeroEuler() {
+
+            pantalla.value =
+                redondear(Math.E);
+
+        }
+
+
+        /* =========================================
+           OBTENER NÚMERO
+        ========================================== */
+
+        function obtenerNumero() {
+
+            const valor =
+                parseFloat(
+                    pantalla.value
+                );
+
+
+            if (
+                !Number.isFinite(valor)
+            ) {
+
+                throw new Error();
+
+            }
+
+
+            return valor;
+
+        }
+
+
+        /* =========================================
+           MOSTRAR RESULTADO
+        ========================================== */
+
+        function mostrarResultado(
+            operacion,
+            resultado
+        ) {
+
+            if (
+                !Number.isFinite(resultado)
+            ) {
+
+                throw new Error();
+
+            }
+
+
+            historial.textContent =
+                operacion + " =";
+
+
+            pantalla.value =
+                redondear(resultado);
+
+        }
+
+
+        /* =========================================
+           ERROR
+        ========================================== */
+
+        function mostrarError() {
+
+            pantalla.value =
+                "Error";
+
+            historial.textContent =
+                "";
+
+        }
+
+
+        /* =========================================
+           REDONDEAR
+        ========================================== */
+
+        function redondear(numero) {
+
+            if (
+                Number.isInteger(numero)
+            ) {
+
+                return numero.toString();
+
+            }
+
+
+            return Number.parseFloat(
+                numero.toFixed(10)
+            ).toString();
+
+        }
+
+
+        /* =========================================
+           SHIFT / ALPHA / MODE
+        ========================================== */
+
+        function mostrarMensaje(
+            mensaje
+        ) {
+
+            historial.textContent =
+                mensaje +
+                " seleccionado";
+
+        }
+
+
+        /* =========================================
+           ON
+        ========================================== */
+
+        function encender() {
+
+            pantalla.value = "0";
+
+            historial.textContent =
+                "Calculadora encendida";
+
+        }
+
+
+        /* =========================================
+           TECLADO
+        ========================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                const tecla =
+                    event.key;
+
+
+                if (
+                    /^[0-9.]$/.test(tecla)
+                ) {
+
+                    agregar(tecla);
+
+                }
+
+
+                if (
+                    [
+                        "+",
+                        "-",
+                        "*",
+                        "/",
+                        "(",
+                        ")"
+                    ].includes(tecla)
+                ) {
+
+                    agregar(tecla);
+
+                }
+
+
+                if (
+                    tecla === "Enter" ||
+                    tecla === "="
+                ) {
+
+                    calcular();
+
+                }
+
+
+                if (
+                    tecla === "Backspace"
+                ) {
+
+                    borrar();
+
+                }
+
+
+                if (
+                    tecla === "Escape"
+                ) {
+
+                    limpiar();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
