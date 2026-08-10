@@ -130,7 +130,7 @@ No es necesario instalar servidores ni programas adicionales porque se trata de 
 
 ### Operaciones básicas: suma y resta
 
-![Operaciones de suma y resta](suma-resta.png)
+![Operaciones de suma y resta](suma_resta.png.png)
 
 
 
