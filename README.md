@@ -135,14 +135,6 @@ No es necesario instalar servidores ni programas adicionales porque se trata de 
 
 
 
-
-
-
-
-> **Nota:** Las imágenes deben ser agregadas posteriormente al repositorio y los nombres de los archivos deben coincidir con los utilizados en este README.
-
-
-
 ## 👥 Integrantes del grupo
 
 | N.º | Integrante           |
