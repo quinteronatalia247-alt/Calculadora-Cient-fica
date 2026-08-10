@@ -122,24 +122,18 @@ Para ejecutar la calculadora localmente:
 No es necesario instalar servidores ni programas adicionales porque se trata de una aplicación frontend.
 
 ---
-
 ## 📸 Capturas de pantalla
 
-### Pantalla principal
+### Calculadora científica WIKIO
 
-Agregar aquí una captura de pantalla de la calculadora funcionando.
+![Capturas de la calculadora](capturas-calculadora-png.png)
 
-```text
-![Pantalla principal](captura-calculadora.png)
-```
 
-### Operaciones científicas
 
-Agregar aquí una captura mostrando las funciones científicas.
 
-```text
-![Funciones científicas](captura-funciones.png)
-```
+
+
+
 
 > **Nota:** Las imágenes deben ser agregadas posteriormente al repositorio y los nombres de los archivos deben coincidir con los utilizados en este README.
 
