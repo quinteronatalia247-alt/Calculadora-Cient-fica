@@ -128,6 +128,10 @@ No es necesario instalar servidores ni programas adicionales porque se trata de 
 
 ![Capturas de la calculadora](capturas-calculadora-png.png)
 
+### Operaciones básicas: suma y resta
+
+![Operaciones de suma y resta](suma-resta.png)
+
 
 
 
