@@ -211,3 +211,8 @@ https://github.com/quinteronatalia247-alt/Calculadora-Cient-fica/edit/main/READM
 **Modalidad:** Trabajo grupal práctico
 **Área:** Desarrollo Frontend
 **Tecnologías:** HTML5, CSS3, Bootstrap 5 y JavaScript
+## 🌐 Despliegue
+
+La calculadora científica se encuentra disponible en línea mediante GitHub Pages.
+
+🔗 **Demo:** [Ver calculadora](https://quinteronatalia247-alt.github.io/Calculadora-Cient-fica/)
