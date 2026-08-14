@@ -991,456 +991,496 @@
          JAVASCRIPT
     ========================================== -->
 
-    <script>
+   <script>
+    const pantalla = document.getElementById("pantalla");
+    const historial = document.getElementById("historial");
 
+    /* =========================================
+       AGREGAR VALORES
+    ========================================== */
+    function agregar(valor) {
 
-        const pantalla =
-            document.getElementById("pantalla");
-
-
-        const historial =
-            document.getElementById("historial");
-
-
-        /* =========================================
-           AGREGAR
-        ========================================== */
-
-        function agregar(valor) {
-
-            if (
-                pantalla.value === "0" ||
-                pantalla.value === "Error"
-            ) {
-
-                pantalla.value = valor;
-
-            }
-
-            else {
-
-                pantalla.value += valor;
-
-            }
-
+        if (pantalla.value === "0" || pantalla.value === "Error") {
+            pantalla.value = valor;
+        } else {
+            pantalla.value += valor;
         }
+    }
 
+    /* =========================================
+       BORRAR UN CARÁCTER
+    ========================================== */
+    function borrar() {
 
-        /* =========================================
-           BORRAR
-        ========================================== */
-
-        function borrar() {
-
-            if (
-                pantalla.value.length > 1
-            ) {
-
-                pantalla.value =
-                    pantalla.value.slice(0, -1);
-
-            }
-
-            else {
-
-                pantalla.value = "0";
-
-            }
-
-        }
-
-
-        /* =========================================
-           LIMPIAR
-        ========================================== */
-
-        function limpiar() {
-
+        if (pantalla.value.length > 1) {
+            pantalla.value = pantalla.value.slice(0, -1);
+        } else {
             pantalla.value = "0";
+        }
+    }
 
-            historial.textContent = "";
+    /* =========================================
+       LIMPIAR
+    ========================================== */
+    function limpiar() {
+        pantalla.value = "0";
+        historial.textContent = "";
+    }
 
+    /* =========================================
+       CALCULAR
+    ========================================== */
+    function calcular() {
+
+        try {
+
+            let expresion = pantalla.value;
+
+            expresion = expresion.replace(/×/g, "*");
+            expresion = expresion.replace(/÷/g, "/");
+            expresion = expresion.replace(/−/g, "-");
+
+            if (!/^[0-9+\-*/().\s]+$/.test(expresion)) {
+                throw new Error();
+            }
+
+            const resultado = Function(
+                '"use strict"; return (' + expresion + ')'
+            )();
+
+            if (!Number.isFinite(resultado)) {
+                throw new Error();
+            }
+
+            historial.textContent = expresion + " =";
+            pantalla.value = redondear(resultado);
+
+        } catch (error) {
+
+            pantalla.value = "Error";
+        }
+    }
+
+    /* =========================================
+       OBTENER NÚMERO
+    ========================================== */
+    function obtenerNumero() {
+
+        let valor = parseFloat(pantalla.value);
+
+        if (isNaN(valor)) {
+            throw new Error();
         }
 
+        return valor;
+    }
 
-        /* =========================================
-           CALCULAR
-        ========================================== */
+    /* =========================================
+       MOSTRAR RESULTADO
+    ========================================== */
+    function mostrarResultado(operacion, resultado) {
 
-        function calcular() {
-
-            try {
-
-                let expresion =
-                    pantalla.value;
-
-                expresion =
-                    expresion.replace(/×/g, "*");
-
-                expresion =
-                    expresion.replace(/÷/g, "/");
-
-
-                if (
-                    !/^[0-9+\-*/().\s]+$/.test(
-                        expresion
-                    )
-                ) {
-
-                    throw new Error();
-
-                }
-
-
-                let resultado =
-                    Function(
-                        '"use strict"; return (' +
-                        expresion +
-                        ')'
-                    )();
-
-
-                if (
-                    !Number.isFinite(resultado)
-                ) {
-
-                    throw new Error();
-
-                }
-
-
-                historial.textContent =
-                    expresion + " =";
-
-
-                pantalla.value =
-                    redondear(resultado);
-
-            }
-
-            catch {
-
-                pantalla.value =
-                    "Error";
-
-            }
-
+        if (!Number.isFinite(resultado)) {
+            throw new Error();
         }
 
+        historial.textContent = operacion + " =";
+        pantalla.value = redondear(resultado);
+    }
 
-        /* =========================================
-           RAÍZ
-        ========================================== */
+    /* =========================================
+       MOSTRAR ERROR
+    ========================================== */
+    function mostrarError() {
+        pantalla.value = "Error";
+    }
 
-        function raiz() {
+    /* =========================================
+       REDONDEAR
+    ========================================== */
+    function redondear(numero) {
 
-            try {
-
-                const valor =
-                    obtenerNumero();
-
-                const resultado =
-                    Math.sqrt(valor);
-
-                mostrarResultado(
-                    "√(" + valor + ")",
-                    resultado
-                );
-
-            }
-
-            catch {
-
-                mostrarError();
-
-            }
-
+        if (Number.isInteger(numero)) {
+            return numero.toString();
         }
 
+        return parseFloat(numero.toFixed(10)).toString();
+    }
 
-        /* =========================================
-           POTENCIA
-        ========================================== */
+    /* =========================================
+       RAÍZ CUADRADA
+    ========================================== */
+    function raiz() {
 
-        function potencia(exponente) {
+        try {
 
-            try {
+            const valor = obtenerNumero();
 
-                const valor =
-                    obtenerNumero();
-
-                const resultado =
-                    Math.pow(
-                        valor,
-                        exponente
-                    );
-
-                mostrarResultado(
-                    valor + "^" + exponente,
-                    resultado
-                );
-
+            if (valor < 0) {
+                throw new Error();
             }
 
-            catch {
+            const resultado = Math.sqrt(valor);
 
-                mostrarError();
+            mostrarResultado(
+                "√(" + valor + ")",
+                resultado
+            );
 
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       POTENCIA
+    ========================================== */
+    function potencia(exponente) {
+
+        try {
+
+            const valor = obtenerNumero();
+
+            const resultado = Math.pow(
+                valor,
+                exponente
+            );
+
+            mostrarResultado(
+                valor + "^" + exponente,
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       FACTORIAL
+    ========================================== */
+    function factorial() {
+
+        try {
+
+            const valor = obtenerNumero();
+
+            if (
+                !Number.isInteger(valor) ||
+                valor < 0 ||
+                valor > 170
+            ) {
+                throw new Error();
             }
 
+            let resultado = 1;
+
+            for (let i = 2; i <= valor; i++) {
+                resultado *= i;
+            }
+
+            mostrarResultado(
+                valor + "!",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       LOGARITMO BASE 10
+    ========================================== */
+    function logaritmo() {
+
+        try {
+
+            const valor = obtenerNumero();
+
+            if (valor <= 0) {
+                throw new Error();
+            }
+
+            const resultado = Math.log10(valor);
+
+            mostrarResultado(
+                "log(" + valor + ")",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       LOGARITMO NATURAL
+    ========================================== */
+    function logNatural() {
+
+        try {
+
+            const valor = obtenerNumero();
+
+            if (valor <= 0) {
+                throw new Error();
+            }
+
+            const resultado = Math.log(valor);
+
+            mostrarResultado(
+                "ln(" + valor + ")",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       VALOR ABSOLUTO
+    ========================================== */
+    function valorAbsoluto() {
+
+        try {
+
+            const valor = obtenerNumero();
+
+            const resultado = Math.abs(valor);
+
+            mostrarResultado(
+                "Abs(" + valor + ")",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       INVERSA
+    ========================================== */
+    function inversa() {
+
+        try {
+
+            const valor = obtenerNumero();
+
+            if (valor === 0) {
+                throw new Error();
+            }
+
+            const resultado = 1 / valor;
+
+            mostrarResultado(
+                "1/(" + valor + ")",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       SENO
+       EN GRADOS
+    ========================================== */
+    function seno() {
+
+        try {
+
+            const grados = obtenerNumero();
+
+            const radianes =
+                grados * Math.PI / 180;
+
+            const resultado =
+                Math.sin(radianes);
+
+            mostrarResultado(
+                "sin(" + grados + "°)",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       COSENO
+       EN GRADOS
+    ========================================== */
+    function coseno() {
+
+        try {
+
+            const grados = obtenerNumero();
+
+            const radianes =
+                grados * Math.PI / 180;
+
+            const resultado =
+                Math.cos(radianes);
+
+            mostrarResultado(
+                "cos(" + grados + "°)",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       TANGENTE
+       EN GRADOS
+    ========================================== */
+    function tangente() {
+
+        try {
+
+            const grados = obtenerNumero();
+
+            const radianes =
+                grados * Math.PI / 180;
+
+            const resultado =
+                Math.tan(radianes);
+
+            mostrarResultado(
+                "tan(" + grados + "°)",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       PORCENTAJE
+    ========================================== */
+    function porcentaje() {
+
+        try {
+
+            const valor = obtenerNumero();
+
+            const resultado = valor / 100;
+
+            mostrarResultado(
+                valor + "%",
+                resultado
+            );
+
+        } catch (error) {
+
+            mostrarError();
+        }
+    }
+
+    /* =========================================
+       PI
+    ========================================== */
+    function pi() {
+
+        if (
+            pantalla.value === "0" ||
+            pantalla.value === "Error"
+        ) {
+
+            pantalla.value = Math.PI;
+
+        } else {
+
+            pantalla.value += Math.PI;
+        }
+    }
+
+    /* =========================================
+       NÚMERO E
+    ========================================== */
+    function numeroEuler() {
+
+        if (
+            pantalla.value === "0" ||
+            pantalla.value === "Error"
+        ) {
+
+            pantalla.value = Math.E;
+
+        } else {
+
+            pantalla.value += Math.E;
+        }
+    }
+
+    /* =========================================
+       BOTONES DE MODO
+    ========================================== */
+    function mostrarMensaje(mensaje) {
+
+        historial.textContent =
+            mensaje + " seleccionado";
+    }
+
+    /* =========================================
+       BOTÓN ON
+    ========================================== */
+    function encender() {
+
+        pantalla.value = "0";
+        historial.textContent = "Calculadora encendida";
+    }
+
+    /* =========================================
+       TECLADO DEL COMPUTADOR
+    ========================================== */
+    document.addEventListener("keydown", function(event) {
+
+        const tecla = event.key;
+
+        if (
+            (tecla >= "0" && tecla <= "9") ||
+            tecla === "." ||
+            tecla === "+" ||
+            tecla === "-" ||
+            tecla === "*" ||
+            tecla === "/" ||
+            tecla === "(" ||
+            tecla === ")"
+        ) {
+
+            agregar(tecla);
         }
 
-
-        /* =========================================
-           FACTORIAL
-        ========================================== */
-
-        function factorial() {
-
-            try {
-
-                const valor =
-                    obtenerNumero();
-
-                if (
-                    !Number.isInteger(valor) ||
-                    valor < 0 ||
-                    valor > 170
-                ) {
-
-                    throw new Error();
-
-                }
-
-
-                let resultado = 1;
-
-
-                for (
-                    let i = 2;
-                    i <= valor;
-                    i++
-                ) {
-
-                    resultado *= i;
-
-                }
-
-
-                mostrarResultado(
-                    valor + "!",
-                    resultado
-                );
-
-            }
-
-            catch {
-
-                mostrarError();
-
-            }
-
+        if (tecla === "Enter" || tecla === "=") {
+            calcular();
         }
 
-
-        /* =========================================
-           LOGARITMO
-        ========================================== */
-
-        function logaritmo() {
-
-            try {
-
-                const valor =
-                    obtenerNumero();
-
-                if (
-                    valor <= 0
-                ) {
-
-                    throw new Error();
-
-                }
-
-
-                const resultado =
-                    Math.log10(valor);
-
-
-                mostrarResultado(
-                    "log(" + valor + ")",
-                    resultado
-                );
-
-            }
-
-            catch {
-
-                mostrarError();
-
-            }
-
+        if (tecla === "Backspace") {
+            borrar();
         }
 
-
-        /* =========================================
-           LOG NATURAL
-        ========================================== */
-
-        function logNatural() {
-
-            try {
-
-                const valor =
-                    obtenerNumero();
-
-                if (
-                    valor <= 0
-                ) {
-
-                    throw new Error();
-
-                }
-
-
-                const resultado =
-                    Math.log(valor);
-
-
-                mostrarResultado(
-                    "ln(" + valor + ")",
-                    resultado
-                );
-
-            }
-
-            catch {
-
-                mostrarError();
-
-            }
-
+        if (tecla === "Escape") {
+            limpiar();
         }
 
-
-        /* =========================================
-           VALOR ABSOLUTO
-        ========================================== */
-
-        function valorAbsoluto() {
-
-            try {
-
-                const valor =
-                    obtenerNumero();
-
-                const resultado =
-                    Math.abs(valor);
-
-
-                mostrarResultado(
-                    "Abs(" + valor + ")",
-                    resultado
-                );
-
-            }
-
-            catch {
-
-                mostrarError();
-
-            }
-
-        }
-
-
-        /* =========================================
-           INVERSA
-        ========================================== */
-
-        function inversa() {
-
-            try {
-
-                const valor =
-                    obtenerNumero();
-
-                if (
-                    valor === 0
-                ) {
-
-                    throw new Error();
-
-                }
-
-
-                const resultado =
-                    1 / valor;
-
-
-                mostrarResultado(
-                    "1/(" + valor + ")",
-                    resultado
-                );
-
-            }
-
-            catch {
-
-                mostrarError();
-
-            }
-
-        }
-
-
-        /* =========================================
-           SENO
-        ========================================== */
-
-        function seno() {
-
-            try {
-
-                const grados =
-                    obtenerNumero();
-
-
-                const radianes =
-                    grados *
-                    Math.PI /
-                    180;
-
-
-                const resultado =
-                    Math.sin(radianes);
-
-
-                mostrarResultado(
-                    "sin(" +
-                    grados +
-                    "°)",
-                    resultado
-                );
-
-            }
-
-            catch {
-
-                mostrarError();
-
-            }
-
-        }
-
-
-        /* =========================================
-           COSENO
-        ========================================== */
-
-        function coseno() {
-
-            try {
-
-                const grados =
-                    obtenerNumero
+    });
+</script>
